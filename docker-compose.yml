@@ -1,10 +1,10 @@
 services:
 # DB CONFIGS
-  postgres-user:
-    container_name: postgres-user
+  user:
+    container_name: user
     image: postgres
     environment:
-      POSTGRES_DB: userDB
+      POSTGRES_DB: user
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       PGDATA: /data/postgres
@@ -13,8 +13,8 @@ services:
     networks:
       - network
 
-  postgres-loyally:
-    container_name: postgres-loyally
+  loyally:
+    container_name: loyally
     image: postgres
     environment:
       POSTGRES_DB: loyally
@@ -26,8 +26,8 @@ services:
     networks:
       - network
 
-  postgres-payment:
-    container_name: postgres-payment
+  payment:
+    container_name: payment
     image: postgres
     environment:
       POSTGRES_DB: payment
@@ -39,8 +39,8 @@ services:
     networks:
       - network
 
-  postgres-restaurant:
-    container_name: postgres-restaurant
+  restaurant:
+    container_name: restaurant
     image: postgres
     environment:
       POSTGRES_DB: restaurant
@@ -53,47 +53,47 @@ services:
       - network
 
 # KAFKA CONFIGS
-  zookeeper:
+  kafka-zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
-    container_name: zookeeper
+    container_name: kafka-zookeeper
     ports:
       - "2181:2181"
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     networks:
-      - bank-network
+      - network
 
-  broker-1:
+  kafka-broker:
     image: confluentinc/cp-kafka:7.5.0
-    container_name: broker-1
-    hostname: broker-1
+    container_name: kafka-broker
+    hostname: kafka
     ports:
       - "9092:9092"
       - "29092:29092"
     depends_on:
-      - zookeeper
+      - kafka-zookeeper
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_ZOOKEEPER_CONNECT: 'kafka-zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT, PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-1:29092, PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-broker:29092, PLAINTEXT_HOST://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_LOG_RETENTION_HOURS: 168
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
     networks:
       - network
 
-  kafka-ui:
-    container_name: kafka-ui
+  docker-kafka-ui:
+    container_name: docker-kafka-ui
     image: provectuslabs/kafka-ui:latest
     ports:
       - "8086:8080"
     depends_on:
-      - broker-1
+      - kafka-broker
     environment:
       KAFKA_CLUSTERS_NAME: local
-      KAFKA_CLUSTERS_BOOTSTRAPSERVERS: broker-1:29092
+      KAFKA_CLUSTERS_BOOTSTRAPSERVERS: kafka:29092
       KAFKA_CLUSTERS_SCHEMAREGISTRY: http://schema-registry:8081
       DYNAMIC_CONFIG_ENABLED: 'true'
     networks:

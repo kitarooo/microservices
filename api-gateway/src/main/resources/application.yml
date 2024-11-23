@@ -1,0 +1,25 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        # url по пользователю
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/v1/users/**
+          filters:
+            - AuthenticationFilter
+
+        # url по авторизации и регистрации
+        - id: auth-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/v1/auth/**
+
+  application:
+    name: API-GATEWAY
+
+eureka:
+  client:
+    service-url:
+      defaultZone : http://localhost:8761/eureka/
