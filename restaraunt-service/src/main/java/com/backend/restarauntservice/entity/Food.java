@@ -1,6 +1,7 @@
 package com.backend.restarauntservice.entity;
 
 
+import com.backend.restarauntservice.entity.enums.Category;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,5 +23,5 @@ public class Food {
     String name;
     String description;
     double price;
-
+    Category category;
 }

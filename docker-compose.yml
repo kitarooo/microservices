@@ -52,6 +52,25 @@ services:
     networks:
       - network
 
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    hostname: mongodb
+    volumes:
+      - ./mongo-initdb.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - mongo-db-log:/var/log/mongodb
+      - mongo-db-data:/data/db/
+    env_file:
+      - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    ports:
+      - "27017:27017"
+    networks:
+      - mongodb_network
+
+
 # KAFKA CONFIGS
   kafka-zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
