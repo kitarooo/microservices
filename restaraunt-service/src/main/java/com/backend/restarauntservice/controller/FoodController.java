@@ -2,7 +2,7 @@ package com.backend.restarauntservice.controller;
 
 import com.backend.restarauntservice.dto.FoodDto;
 import com.backend.restarauntservice.entity.Food;
-import com.backend.restarauntservice.service.impl.FoodServiceImpl;
+import com.backend.restarauntservice.service.FoodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FoodController {
 
-    private final FoodServiceImpl foodService;
+    private final FoodService foodService;
 
     @GetMapping
     public ResponseEntity<List<Food>> getFoods() {
