@@ -5,6 +5,7 @@ import com.backend.restarauntservice.entity.Food;
 import com.backend.restarauntservice.repository.FoodRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class FoodService {
 
     private final FoodRepository foodRepository;
 
+    @Transactional
     public String createFood(FoodDto foodDto) {
         Food food = new Food();
         food.setName(foodDto.getName());
@@ -24,14 +26,17 @@ public class FoodService {
         return "Еда была добавлена";
     }
 
+    @Transactional(readOnly = true)
     public Food getFood(Long foodId) {
         return foodRepository.findById(foodId).orElse(null);
     }
 
+    @Transactional(readOnly = true)
     public List<Food> getFoods() {
         return foodRepository.findAll();
     }
 
+    @Transactional
     public String updateFood(Long foodId, FoodDto food) {
         Food foodToUpdate = foodRepository.findById(foodId).orElseThrow();
 
@@ -43,6 +48,7 @@ public class FoodService {
         return "Еда была обновлена";
     }
 
+    @Transactional
     public String deleteFood(Long foodId) {
         foodRepository.deleteById(foodId);
         return "Еда была удалена";
