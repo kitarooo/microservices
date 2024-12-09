@@ -19,8 +19,8 @@ public class Menu {
     String name;
     String description;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.EAGER)
     List<Food> foods;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.EAGER)
     List<Drink> drinks;
 }

@@ -26,7 +26,7 @@ public class Restaurant {
     @Column(name = "PHONE_NUMBER", unique = true, nullable = false)
     String phoneNumber;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER)
     List<Menu> menu;
 
 }
